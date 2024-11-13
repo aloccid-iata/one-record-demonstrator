@@ -1,0 +1,17 @@
+[
+  {
+    "id": "4",
+    "httpRequest": {
+      "path": "/subscription/*"
+    },
+    "httpResponse": {
+      "body": {
+        "type": "JSON",
+        "json": {
+          "subscribe" : "true"
+        },
+        "contentType": "application/json"
+      }
+    }
+  }
+]

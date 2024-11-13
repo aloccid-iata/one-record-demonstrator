@@ -1,0 +1,11 @@
+[
+  {
+    "id": "6",
+    "httpRequest": {
+      "path": "/notifications/*"
+    },
+    "httpResponse": {
+      "statusCode": 204
+    }
+  }
+]

@@ -1,0 +1,29 @@
+FROM node:18.19.0-alpine3.19 as base
+ARG STARTPORT
+# Install dependencies only when needed
+FROM base AS deps
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat git
+WORKDIR /app
+
+RUN git clone https://github.com/aloccid-iata/one-record-ops-ui.git
+RUN mv one-record-ops-ui/* ./
+
+RUN npm install
+
+
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app /app
+
+
+# If using npm comment out above and use below instead
+RUN npm run build
+
+
+EXPOSE 3000
+
+# set hostname to localhost
+ENV HOSTNAME "0.0.0.0"
+
+CMD ["npm", "run", "serve"]

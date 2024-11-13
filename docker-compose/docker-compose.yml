@@ -1,0 +1,213 @@
+version: '3.8'
+services:
+    localhost:
+        image: alpine:latest
+        command: sleep infinity
+        ports:
+            - "8080:8080" # ne-one-1
+            - "8081:8081" # ne-one-2            
+            - "8989:8989" # Keycloak port
+            - "3000:3000" # ne-one-play
+            - "1080:1080" # mockserver
+            - "7200:7200" # graph-db
+            - "4080:4080" # ops-ui-one
+            - "5080:5080" # ops-ui-two
+            - "6080:6080" # ops-ui-three
+
+    ne-one-play:
+        build: 
+            context: .
+            dockerfile: ne-one-play/Dockerfile
+        network_mode: service:localhost
+        depends_on:
+            localhost:
+                condition: service_started
+            ne-one-1:
+                condition: service_healthy
+    
+    ops-ui-one:
+        image: one-record-ops-ui
+        build: 
+            context: .
+            dockerfile: ops-ui/Dockerfile
+        environment:
+            - PORT=4080
+        network_mode: service:localhost
+        depends_on:
+            localhost:
+                condition: service_started
+            ne-one-1:
+                condition: service_healthy
+
+    ops-ui-two:
+        image: one-record-ops-ui
+        environment:
+            - PORT=5080
+        network_mode: service:localhost
+        depends_on:
+            localhost:
+                condition: service_started
+            ne-one-1:
+                condition: service_healthy
+
+    ops-ui-three:
+        image: one-record-ops-ui
+        environment:
+            - PORT=6080
+        network_mode: service:localhost
+        depends_on:
+            localhost:
+                condition: service_started
+            ne-one-1:
+                condition: service_healthy
+
+    ne-one-1:
+        image: git.openlogisticsfoundation.org:5050/wg-digitalaircargo/ne-one:dev
+        network_mode: service:localhost
+        healthcheck:
+            test: curl --fail http://localhost:8080/q/health || exit 1
+            interval: 15s
+            timeout: 10s
+            retries: 20            
+        environment:            
+            - REPOSITORY_TYPE=http
+            - HTTP_REPOSITORY_URL=http://localhost:7200/repositories/neone
+            - LO_ID_CONFIG_HOST=localhost
+            - LO_ID_CONFIG_PORT=8080
+            - LO_ID_CONFIG_SCHEME=http
+            - AUTH_VALID_ISSUERS_LOCAL=http://localhost:8989/realms/neone
+            - AUTH_ISSUERS_LOCAL_PUBLICKEY_LOCATION=http://localhost:8989/realms/neone/protocol/openid-connect/certs
+            - QUARKUS_OIDC_CLIENT_AUTH_SERVER_URL=http://localhost:8989/realms/neone
+            - QUARKUS_OIDC_CLIENT_CLIENT_ID=neone-client
+            - QUARKUS_OIDC_CLIENT_CREDENTIALS_SECRET=lx7ThS5aYggdsMm42BP3wMrVqKm9WpNY                                                                                                                                                                         
+            - QUARKUS_HTTP_PORT=8080           
+            - QUARKUS_REDIS_HOSTS=redis://localhost:6379
+            - AUTO_ACCEPT_ACTION_REQUESTS=true
+            - BLOBSTORE_CREATE_BUCKET=false
+            - QUARKUS_HTTP_CORS=true
+            - QUARKUS_HTTP_CORS_ORIGINS=/.*/
+            - QUARKUS_HTTP_CORS_EXPOSED_HEADERS=location,revision,latest-revision,type
+            - QUARKUS_REST_CLIENT_SUBSCRIPTION_CLIENT_URL=http://localhost:1080   
+            - QUARKUS_REST_CLIENT_NOTIFICATION_CLIENT_URL=http://host.docker.internal:4081     
+            - QUARKUS_REST_CLIENT_ACTION_REQUEST_CLIENT_URL=http://localhost:1080
+            - FORWARD_NOTIFICATIONS=true
+            - QUARKUS_LOG_MIN_LEVEL=DEBUG
+
+        depends_on:
+            keycloak:
+                condition: service_healthy
+            graph-db:
+                condition: service_healthy
+            localhost:
+                condition: service_started
+
+    ne-one-2:
+        image: git.openlogisticsfoundation.org:5050/wg-digitalaircargo/ne-one:dev
+        network_mode: service:localhost
+        healthcheck:
+            test: curl --fail http://localhost:8081/q/health || exit 1
+            interval: 15s
+            timeout: 10s
+            retries: 20            
+        environment:            
+            - REPOSITORY_TYPE=http
+            - HTTP_REPOSITORY_URL=http://localhost:7200/repositories/neone2
+            - LO_ID_CONFIG_HOST=localhost
+            - LO_ID_CONFIG_PORT=8081
+            - LO_ID_CONFIG_SCHEME=http
+            - AUTH_VALID_ISSUERS_LOCAL=http://localhost:8989/realms/neone
+            - AUTH_ISSUERS_LOCAL_PUBLICKEY_LOCATION=http://localhost:8989/realms/neone/protocol/openid-connect/certs
+            - QUARKUS_OIDC_CLIENT_AUTH_SERVER_URL=http://localhost:8989/realms/neone
+            - QUARKUS_OIDC_CLIENT_CLIENT_ID=neone-client
+            - QUARKUS_OIDC_CLIENT_CREDENTIALS_SECRET=lx7ThS5aYggdsMm42BP3wMrVqKm9WpNY                                                                                     
+            - QUARKUS_HTTP_PORT=8081          
+            - QUARKUS_REDIS_HOSTS=redis://localhost:6379
+            - AUTO_ACCEPT_ACTION_REQUESTS=true
+            - BLOBSTORE_CREATE_BUCKET=false
+            - QUARKUS_HTTP_CORS=true
+            - QUARKUS_HTTP_CORS_ORIGINS=/.*/
+            - QUARKUS_HTTP_CORS_EXPOSED_HEADERS=location,revision,latest-revision,type
+            - QUARKUS_REST_CLIENT_SUBSCRIPTION_CLIENT_URL=http://localhost:1080   
+            - QUARKUS_REST_CLIENT_NOTIFICATION_CLIENT_URL=http://host.docker.internal:5081    
+            - QUARKUS_REST_CLIENT_ACTION_REQUEST_CLIENT_URL=http://localhost:1080  
+            - FORWARD_NOTIFICATIONS=true
+            - QUARKUS_LOG_MIN_LEVEL=DEBUG
+            
+        depends_on:
+            keycloak:
+                condition: service_healthy
+            graph-db:
+                condition: service_healthy
+            ne-one-1:
+                condition: service_healthy
+            localhost:
+                condition: service_started
+
+    keycloak:
+        image: quay.io/keycloak/keycloak:23.0
+        network_mode: service:localhost
+        healthcheck:
+            # because curl was removed in keycloak 21+
+            test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8989;echo -e \"GET /health/ready HTTP/1.1\r\nhost: http://localhost\r\nConnection: close\r\n\r\n\" >&3;grep \"HTTP/1.1 200 OK\" <&3"]
+            interval: 15s
+            timeout: 2s
+            start_period: 50s
+            retries: 15
+        environment:
+            KEYCLOAK_ADMIN: admin
+            KEYCLOAK_ADMIN_PASSWORD: admin
+            KC_HEALTH_ENABLED: true
+            KC_HTTP_PORT: 8989                      
+        volumes:
+            - "./keycloak/neone-realm.json:/opt/keycloak/data/import/neone-realm.json"
+        command:
+            - start-dev
+            - --import-realm    
+            - --hostname=localhost
+        depends_on:
+            localhost:
+                condition: service_started
+        
+
+    graph-db:
+        image: ontotext/graphdb:10.4.3    
+        network_mode: service:localhost   
+        healthcheck:
+            test: "curl -f http://localhost:7200/rest/repositories || exit 1"
+            interval: 15s
+            timeout: 10s
+            retries: 20
+        depends_on:
+            localhost:
+                condition: service_started
+
+    graph-db-setup:
+        image: ontotext/graphdb:10.4.3
+        network_mode: service:localhost
+        entrypoint: [ "/bin/bash", "-c" ]
+        restart: "no"
+        depends_on:
+            graph-db:
+                condition: service_healthy
+        command:
+            - /opt/neone/graphdb/init.sh
+        environment:
+            - NEONE_REPO_ID=neone
+            - NEONE_REPO_ID_2=neone2
+        volumes:
+            - "./graphdb/init.sh:/opt/neone/graphdb/init.sh"
+            - "./graphdb/neone-repository.ttl:/opt/neone/graphdb/neone-repository.ttl" 
+            - "./graphdb/neone-repository-2.ttl:/opt/neone/graphdb/neone-repository-2.ttl" 
+
+    mockserver:
+        image: mockserver/mockserver:5.15.0
+        network_mode: service:localhost
+        volumes:
+          - "./mockserver/mockserver.properties:/config/mockserver.properties"
+          - "./mockserver/:/mockserver/"
+        environment:
+          - MOCKSERVER_PROPERTY_FILE=/config/mockserver.properties
+          - MOCKSERVER_INITIALIZATION_JSON_PATH=/config/*.json
+        depends_on:
+            localhost:
+                condition: service_started

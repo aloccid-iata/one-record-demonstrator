@@ -1,0 +1,17 @@
+[
+  {
+    "id": "15",
+    "httpRequest": {
+      "path": "/actionrequest/*"
+    },
+    "httpResponse": {
+      "body": {
+        "type": "JSON",
+        "json": {
+          "actionRequestStatus" : "REQUEST_ACCEPTED"
+        },
+        "contentType": "application/json"
+      }
+    }
+  }
+]

@@ -1,0 +1,68 @@
+[
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/proposal/*",
+      "queryStringParameters": {
+        "topicType": ["https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_TYPE"],
+        "topic": ["https://onerecord.iata.org/ns/cargo#Piece"]
+      }
+    },
+    "httpResponse": {
+      "body": {
+        "type": "JSON",
+        "json": {
+          "@type": "https://onerecord.iata.org/ns/api#Subscription",
+          "@context": {
+            "cargo": "https://onerecord.iata.org/ns/cargo#",
+            "api": "https://onerecord.iata.org/ns/api#"
+          },
+          "api:hasContentType": " application/ld+json ",
+          "api:hasSubscriber": {
+           "@id": "http://localhost:8080/"
+          },
+          "api:hasTopicType": {
+            "@id": "api:LOGISTICS_OBJECT_TYPE"
+          },
+          "api:hasTopic": {
+           "@id": "cargo:Piece"
+          },
+          "api:subscribeToLogisticsEvents": true,
+          "api:sendLogisticsObjectBody": true
+        },
+        "contentType": "application/ld+json"
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/proposal/*"
+    },
+    "httpResponse": {
+      "body": {
+        "type": "JSON",
+        "json": {
+          "@type": "https://onerecord.iata.org/ns/api#Subscription",
+          "@context": {
+            "cargo": "https://onerecord.iata.org/ns/cargo#",
+            "api": "https://onerecord.iata.org/ns/api#"
+          },
+          "api:hasContentType": " application/ld+json ",
+          "api:hasSubscriber": {
+            "@id": "http://localhost:8080/"
+          },
+          "api:hasTopicType": {
+            "@id": "api:LOGISTICS_OBJECT_IDENTIFIER"
+          },
+          "api:hasTopic": {
+            "@id": "http://localhost:8080/4711"
+          },
+          "api:subscribeToLogisticsEvents": true,
+          "api:sendLogisticsObjectBody": true
+        },
+        "contentType": "application/ld+json"
+      }
+    }
+  }
+]

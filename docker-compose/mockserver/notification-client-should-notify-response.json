@@ -1,0 +1,17 @@
+[
+  {
+    "id": "5",
+    "httpRequest": {
+      "path": "/notifications/partner/*"
+    },
+    "httpResponse": {
+      "body": {
+        "type": "JSON",
+        "json": {
+          "companyIds" : [ "http://localhost:8080/", "company:456", "company:789"]
+        },
+        "contentType": "application/json"
+      }
+    }
+  }
+]

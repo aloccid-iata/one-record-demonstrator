@@ -1,0 +1,17 @@
+[
+  {
+    "id": "3",
+    "httpRequest": {
+      "path": "/subscription/callback"
+    },
+    "httpResponse": {
+      "body": {
+        "type": "JSON",
+        "json": {
+          "status" : "OK"
+        },
+        "contentType": "application/json"
+      }
+    }
+  }
+]
