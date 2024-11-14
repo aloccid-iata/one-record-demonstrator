@@ -12,11 +12,11 @@ Welcome to the ONE Record Two Nodes, in this document you will find all the inst
 
 1) Clone the repository
    ```bash
-   git clone https://github.com/IATA-Cargo/one-record-two-nodes.git
+   git clone https://github.com/IATA-Cargo/one-record-demo.git
    ```
 2) Switch to the directory to docker-compose
    ```bash
-   cd one-record-two-nodes/docker-compose
+   cd one-record-demo/docker-compose
    ```
    If you have Mac or Linux, please reset folder permissions 
    ```bash
