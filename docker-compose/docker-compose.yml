@@ -13,9 +13,9 @@ services:
             - "4080:4080" # ops-ui-one
             - "4081:4081" # ops-ui-server-one
             - "5080:5080" # ops-ui-two
-            - "5081:4081" # ops-ui-server-two
+            - "5081:5081" # ops-ui-server-two
             - "6080:6080" # ops-ui-three
-            - "6081:4081" # ops-ui-server-three
+            - "6081:6081" # ops-ui-server-three
 
     ne-one-play:
         build: 
@@ -126,9 +126,7 @@ services:
             - QUARKUS_HTTP_CORS=true
             - QUARKUS_HTTP_CORS_ORIGINS=/.*/
             - QUARKUS_HTTP_CORS_EXPOSED_HEADERS=location,revision,latest-revision,type
-            - QUARKUS_REST_CLIENT_SUBSCRIPTION_CLIENT_URL=http://localhost:1080   
             - QUARKUS_REST_CLIENT_NOTIFICATION_CLIENT_URL=http://host.docker.internal:4081     
-            - QUARKUS_REST_CLIENT_ACTION_REQUEST_CLIENT_URL=http://localhost:1080
             - FORWARD_NOTIFICATIONS=true
             - QUARKUS_LOG_MIN_LEVEL=DEBUG
 
@@ -166,9 +164,7 @@ services:
             - QUARKUS_HTTP_CORS=true
             - QUARKUS_HTTP_CORS_ORIGINS=/.*/
             - QUARKUS_HTTP_CORS_EXPOSED_HEADERS=location,revision,latest-revision,type
-            - QUARKUS_REST_CLIENT_SUBSCRIPTION_CLIENT_URL=http://localhost:1080   
             - QUARKUS_REST_CLIENT_NOTIFICATION_CLIENT_URL=http://host.docker.internal:5081    
-            - QUARKUS_REST_CLIENT_ACTION_REQUEST_CLIENT_URL=http://localhost:1080  
             - FORWARD_NOTIFICATIONS=true
             - QUARKUS_LOG_MIN_LEVEL=DEBUG
             
