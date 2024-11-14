@@ -91,7 +91,7 @@ We show here the process to connect the Ops UI  to a NE:ONE server
    - http://localhost:6080
 
 2. Click on settings in the sidebar
-3. Setup the internal server baseurl with one of the two NE:ONE servers respectively
+3. Setup the Internal API Settings - Base URL with one of the two NE:ONE servers respectively
    - http://localhost:8080
    - http://localhost:8081
 4. Use the token generated in the previous section for the token field.
@@ -107,14 +107,13 @@ We show here how to add an external server to the Ops UI.
    - http://localhost:6080
 
 2. Click on settings in the sidebar
-3. Setup the internal server baseurl with one of the two NE:ONE servers respectively
-   - http://localhost:8080
-   - http://localhost:8081
+3. Click on ADD SERVER in the External Servers section
 4. On the popup insert:
    - Server name
    - The base url of the server (to use the NE:ONE server of these image use http://localhost:8080 or 8081. To use the Ops UI server input http://localhost:4081 or 5081 or 6081)
    - A OIDC token (for NE:ONE you can use the get a token section while for Ops Ui server just put a random character)
-6. Now the Ops UI can interact with external servers
+6. Click on ADD 
+7. Now the Ops UI can interact with external servers
 
 ## Add NE:ONE server into NE:ONE Play
 
