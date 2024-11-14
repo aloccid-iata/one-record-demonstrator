@@ -7,12 +7,15 @@ services:
             - "8080:8080" # ne-one-1
             - "8081:8081" # ne-one-2            
             - "8989:8989" # Keycloak port
-            - "3000:3000" # ne-one-play
+            - "3001:3001" # ne-one-play
             - "1080:1080" # mockserver
             - "7200:7200" # graph-db
             - "4080:4080" # ops-ui-one
+            - "4081:4081" # ops-ui-server-one
             - "5080:5080" # ops-ui-two
+            - "5081:4081" # ops-ui-server-two
             - "6080:6080" # ops-ui-three
+            - "6081:4081" # ops-ui-server-three
 
     ne-one-play:
         build: 
@@ -52,6 +55,42 @@ services:
 
     ops-ui-three:
         image: one-record-ops-ui
+        environment:
+            - PORT=6080
+        network_mode: service:localhost
+        depends_on:
+            localhost:
+                condition: service_started
+            ne-one-1:
+                condition: service_healthy
+
+    ops-ui-server-one:
+        image: ops-ui-server
+        build: 
+            context: .
+            dockerfile: ops-ui/Dockerfile-express
+        environment:
+            - PORT=4080
+        network_mode: service:localhost
+        depends_on:
+            localhost:
+                condition: service_started
+            ne-one-1:
+                condition: service_healthy
+
+    ops-ui-server-two:
+        image: ops-ui-server
+        environment:
+            - PORT=5080
+        network_mode: service:localhost
+        depends_on:
+            localhost:
+                condition: service_started
+            ne-one-1:
+                condition: service_healthy
+
+    ops-ui-server-three:
+        image: ops-ui-server
         environment:
             - PORT=6080
         network_mode: service:localhost

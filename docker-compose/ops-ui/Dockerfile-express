@@ -21,9 +21,9 @@ COPY --from=deps /app /app
 RUN npm run build
 
 
-EXPOSE 3000
+EXPOSE 3002
 
 # set hostname to localhost
 ENV HOSTNAME "0.0.0.0"
 
-CMD ["npm", "run", "start-react"]
+CMD ["npm", "run", "start-server"]
