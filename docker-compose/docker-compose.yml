@@ -203,7 +203,6 @@ services:
             localhost:
                 condition: service_started
         
-
     graph-db:
         image: ontotext/graphdb:10.4.3    
         network_mode: service:localhost   
