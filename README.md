@@ -44,17 +44,25 @@ Welcome to the ONE Record Two Nodes, in this document you will find all the inst
 |-|-|-|
 | ne-one-1 | [ne-one server](https://git.openlogisticsfoundation.org/wg-digitalaircargo/ne-one) | http://localhost:8080 |
 | ne-one-2 | [ne-one server](https://git.openlogisticsfoundation.org/wg-digitalaircargo/ne-one) | http://localhost:8081 |
-| ne-one view | [ne-one view](https://git.openlogisticsfoundation.org/wg-digitalaircargo/ne-one-view) | http://localhost:3000 |
 | ne-one play | [ne-one play](https://github.com/aloccid-iata/neoneplay) | http://localhost:3001 |
+| ops ui one| ONE Record operational interface | http://localhost:4080 |
+| ops ui two| ONE Record operational interface | http://localhost:5080 |
+| ops ui three| ONE Record operational interface | http://localhost:6080 |
+| ops ui server one| ONE Record operational interface node server used for notification and subscription| http://localhost:4081 |
+| ops ui server two| ONE Record operational interface node server used for notification and subscription| http://localhost:5081 |
+| ops ui server three| ONE Record operational interface node server used for notification and subscription| http://localhost:6081 |
 | graphdb | GraphDB database as database backend for ne-one-1 and ne-one-2 on two separate repositories (neone and neone2) | http://localhost:7200 |
 | keycloak | Identity provider for ne-one-1 and ne-one-2 servers to authenticate ONE Record clients and to obtain tokens for outgoing requests. <br/> **Preconfigured client_id:** neone-client<br/> **Preconfigured client_secret:** lx7ThS5aYggdsMm42BP3wMrVqKm9WpNY  | http://localhost:8989 <br/> (username/password: admin/admin)|
 | mockserver | A mock server that displays all notification, subscription and action request and replies with specific patterns | http://localhost:1080/mockserver/dashboard |
+IMPORTANT: 
+- To simplify the setup, both NE:ONE servers are connected to a single Keycloak server, sharing the same user account.
+- Each ops ui is directly connected with a ops ui server to stream notification.
+- You can connect two ops ui to the two ne-one server and keep one as a standalone client. The ops ui server is be able to reply to subscription requests and receive direct notifications.
 
-IMPORTANT: To simplify the setup, both NE:ONE servers are connected to a single Keycloak server, sharing the same user account.
 
-## Postman Collection
+## Get a token
 
-To setup a pub/sub we have prepared a Postman collection. You will need to install Postman or a compatible software in order to use it.
+To get a token we have prepared a Postman collection. You will need to install Postman or a compatible software in order to use it.
 
 1. [Download the Postman Collection here.](./assets/postman/Subscription.postman_collection.json) It will open a new github page, use the download button to get the file
 
@@ -71,15 +79,42 @@ There you will have server1, server2 and baseUrlKeyCloak
 
 7. Use the Token Request call to generate and access token
 
-8. Copy the access token (it might be a long string, please copy the full content) in the Authorization tab of the collection folder (Subscription). Now all API calls will in the folder will use the same bearer token. Alternatively you can copy the token to the Authorization tab of each API call.
+8. Copy the access token
 
-10. Run the call named "Subscription S1 to S2 Product" to have the ne-one-1 server subscribing to all Product logistics object created on ne-one-2
+## Connect Ops UI to NE:ONE
 
-11. Approve the subscription on ne-one-2 with the call "Approve subscription"
+We show here the process to connect the Ops UI  to a NE:ONE server
 
-12. Generate a new Product on ne-one-2 using the call "Create Product". Looking at the log of ne-one-1 you should receive a notification.
+1. Connect to a Ops UI , in this image you have three possibilities:
+   - http://localhost:4080
+   - http://localhost:5080
+   - http://localhost:6080
 
-IMPORTANT: In the current setup, *ne-one-1* will receive a notification and send a ping to the mock server. To modify this behavior, update the 'QUARKUS_REST_CLIENT_NOTIFICATION_CLIENT_URL' property in the *ne-one-1* configuration within the Docker Compose file to point to your server. *Ne-one-1* will then forward the notification to *(your-host)/notifications*.
+2. Click on settings in the sidebar
+3. Setup the internal server baseurl with one of the two NE:ONE servers respectively
+   - http://localhost:8080
+   - http://localhost:8081
+4. Use the token generated in the previous section for the token field.
+5. Now the Ops UI is linked with one of the two NE:ONE servers. You can repeat the steps for a second Ops UI.
+
+## Add external servers in the Ops UI 
+
+We show here how to add an external server to the Ops UI.
+
+1. Connect to a Ops UI , in this image you have three possibilities:
+   - http://localhost:4080
+   - http://localhost:5080
+   - http://localhost:6080
+
+2. Click on settings in the sidebar
+3. Setup the internal server baseurl with one of the two NE:ONE servers respectively
+   - http://localhost:8080
+   - http://localhost:8081
+4. On the popup insert:
+   - Server name
+   - The base url of the server (to use the NE:ONE server of these image use http://localhost:8080 or 8081. To use the Ops UI server input http://localhost:4081 or 5081 or 6081)
+   - A OIDC token (for NE:ONE you can use the get a token section while for Ops Ui server just put a random character)
+6. Now the Ops UI can interact with external servers
 
 ## Add NE:ONE server into NE:ONE Play
 
