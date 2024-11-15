@@ -124,7 +124,7 @@ services:
             - AUTO_ACCEPT_ACTION_REQUESTS=true
             - BLOBSTORE_CREATE_BUCKET=false
             - QUARKUS_HTTP_CORS=true
-            - QUARKUS_HTTP_CORS_ORIGINS=/.*/
+            - QUARKUS_HTTP_CORS_ORIGINS=http://localhost:4080,http://localhost:5080,http://localhost:6080,http://localhost:8080,http://localhost:8081,http://localhost:4081,http://localhost:5081,http://localhost:6081,http://localhost:3001
             - QUARKUS_HTTP_CORS_EXPOSED_HEADERS=location,revision,latest-revision,type
             - QUARKUS_REST_CLIENT_NOTIFICATION_CLIENT_URL=http://localhost:4081     
             - FORWARD_NOTIFICATIONS=true
@@ -162,7 +162,7 @@ services:
             - AUTO_ACCEPT_ACTION_REQUESTS=true
             - BLOBSTORE_CREATE_BUCKET=false
             - QUARKUS_HTTP_CORS=true
-            - QUARKUS_HTTP_CORS_ORIGINS=/.*/
+            - QUARKUS_HTTP_CORS_ORIGINS=http://localhost:4080,http://localhost:5080,http://localhost:6080,http://localhost:8080,http://localhost:8081,http://localhost:4081,http://localhost:5081,http://localhost:6081,http://localhost:3001
             - QUARKUS_HTTP_CORS_EXPOSED_HEADERS=location,revision,latest-revision,type
             - QUARKUS_REST_CLIENT_NOTIFICATION_CLIENT_URL=http://localhost:5081    
             - FORWARD_NOTIFICATIONS=true
