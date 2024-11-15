@@ -126,7 +126,7 @@ services:
             - QUARKUS_HTTP_CORS=true
             - QUARKUS_HTTP_CORS_ORIGINS=/.*/
             - QUARKUS_HTTP_CORS_EXPOSED_HEADERS=location,revision,latest-revision,type
-            - QUARKUS_REST_CLIENT_NOTIFICATION_CLIENT_URL=http://host.docker.internal:4081     
+            - QUARKUS_REST_CLIENT_NOTIFICATION_CLIENT_URL=http://localhost:4081     
             - FORWARD_NOTIFICATIONS=true
             - QUARKUS_LOG_MIN_LEVEL=DEBUG
 
@@ -164,7 +164,7 @@ services:
             - QUARKUS_HTTP_CORS=true
             - QUARKUS_HTTP_CORS_ORIGINS=/.*/
             - QUARKUS_HTTP_CORS_EXPOSED_HEADERS=location,revision,latest-revision,type
-            - QUARKUS_REST_CLIENT_NOTIFICATION_CLIENT_URL=http://host.docker.internal:5081    
+            - QUARKUS_REST_CLIENT_NOTIFICATION_CLIENT_URL=http://localhost:5081    
             - FORWARD_NOTIFICATIONS=true
             - QUARKUS_LOG_MIN_LEVEL=DEBUG
             
