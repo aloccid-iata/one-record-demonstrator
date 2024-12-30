@@ -10,12 +10,12 @@ services:
             - "3001:3001" # ne-one-play
             - "1080:1080" # mockserver
             - "7200:7200" # graph-db
-            - "4080:4080" # ops-ui-one
-            - "4081:4081" # ops-ui-server-one
-            - "5080:5080" # ops-ui-two
-            - "5081:5081" # ops-ui-server-two
-            - "6080:6080" # ops-ui-three
-            - "6081:6081" # ops-ui-server-three
+            - "4080:4080" # ONExplorer-one
+            - "4081:4081" # ONExplorer-server-one
+            - "5080:5080" # ONExplorer-two
+            - "5081:5081" # ONExplorer-server-two
+            - "6080:6080" # ONExplorer-three
+            - "6081:6081" # ONExplorer-server-three
 
     ne-one-play:
         build: 
@@ -28,11 +28,11 @@ services:
             ne-one-1:
                 condition: service_healthy
     
-    ops-ui-one:
-        image: one-record-ops-ui
+    ONExplorer-one:
+        image: one-record-ONExplorer
         build: 
             context: .
-            dockerfile: ops-ui/Dockerfile
+            dockerfile: ONExplorer/Dockerfile
         environment:
             - PORT=4080
         network_mode: service:localhost
@@ -42,8 +42,8 @@ services:
             ne-one-1:
                 condition: service_healthy
 
-    ops-ui-two:
-        image: one-record-ops-ui
+    ONExplorer-two:
+        image: one-record-ONExplorer
         environment:
             - PORT=5080
         network_mode: service:localhost
@@ -53,8 +53,8 @@ services:
             ne-one-1:
                 condition: service_healthy
 
-    ops-ui-three:
-        image: one-record-ops-ui
+    ONExplorer-three:
+        image: one-record-ONExplorer
         environment:
             - PORT=6080
         network_mode: service:localhost
@@ -64,11 +64,11 @@ services:
             ne-one-1:
                 condition: service_healthy
 
-    ops-ui-server-one:
-        image: ops-ui-server
+    ONExplorer-server-one:
+        image: ONExplorer-server
         build: 
             context: .
-            dockerfile: ops-ui/Dockerfile-express
+            dockerfile: ONExplorer/Dockerfile-express
         environment:
             - PORT=4080
         network_mode: service:localhost
@@ -78,8 +78,8 @@ services:
             ne-one-1:
                 condition: service_healthy
 
-    ops-ui-server-two:
-        image: ops-ui-server
+    ONExplorer-server-two:
+        image: ONExplorer-server
         environment:
             - PORT=5080
         network_mode: service:localhost
@@ -89,8 +89,8 @@ services:
             ne-one-1:
                 condition: service_healthy
 
-    ops-ui-server-three:
-        image: ops-ui-server
+    ONExplorer-server-three:
+        image: ONExplorer-server
         environment:
             - PORT=6080
         network_mode: service:localhost
