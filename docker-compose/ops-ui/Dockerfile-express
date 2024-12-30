@@ -6,8 +6,8 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat git
 WORKDIR /app
 
-RUN git clone https://github.com/aloccid-iata/one-record-ops-ui.git
-RUN mv one-record-ops-ui/* ./
+RUN git clone https://github.com/aloccid-iata/ONExplorer.git
+RUN mv ONExplorer/* ./
 
 RUN npm install
 
