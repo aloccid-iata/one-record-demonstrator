@@ -1,6 +1,6 @@
 # ONE Record Demonstrator
 
-Welcome to the ONE Record Demonstrator, in this document you will find all the instructions to run a two NE:ONE server and how to setup pub/sub in ONE Record
+Welcome to the ONE Record Demonstrator, in this document you will find all the instructions to run a full ONE Record environment with two NE:ONE server and three ONExplorer interfaces.
 
 ## Prerequisites
 
