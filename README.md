@@ -1,6 +1,6 @@
-# ONE Record Two Nodes
+# ONE Record Demonstrator
 
-Welcome to the ONE Record Two Nodes, in this document you will find all the instructions to run a two NE:ONE server and how to setup pub/sub in ONE Record
+Welcome to the ONE Record Demonstrator, in this document you will find all the instructions to run a two NE:ONE server and how to setup pub/sub in ONE Record
 
 ## Prerequisites
 
@@ -45,12 +45,12 @@ Welcome to the ONE Record Two Nodes, in this document you will find all the inst
 | ne-one-1 | [ne-one server](https://git.openlogisticsfoundation.org/wg-digitalaircargo/ne-one) | http://localhost:8080 |
 | ne-one-2 | [ne-one server](https://git.openlogisticsfoundation.org/wg-digitalaircargo/ne-one) | http://localhost:8081 |
 | ne-one play | [ne-one play](https://github.com/aloccid-iata/neoneplay) | http://localhost:3001 |
-| ops ui one| ONE Record operational interface | http://localhost:4080 |
-| ops ui two| ONE Record operational interface | http://localhost:5080 |
-| ops ui three| ONE Record operational interface | http://localhost:6080 |
-| ops ui server one| ONE Record operational interface node server used for notification and subscription| http://localhost:4081 |
-| ops ui server two| ONE Record operational interface node server used for notification and subscription| http://localhost:5081 |
-| ops ui server three| ONE Record operational interface node server used for notification and subscription| http://localhost:6081 |
+| ONExplorer one| ONE Record operational interface | http://localhost:4080 |
+| ONExplorer two| ONE Record operational interface | http://localhost:5080 |
+| ONExplorer three| ONE Record operational interface | http://localhost:6080 |
+| ONExplorer server one| ONE Record operational interface node server used for notification and subscription| http://localhost:4081 |
+| ONExplorer server two| ONE Record operational interface node server used for notification and subscription| http://localhost:5081 |
+| ONExplorer server three| ONE Record operational interface node server used for notification and subscription| http://localhost:6081 |
 | graphdb | GraphDB database as database backend for ne-one-1 and ne-one-2 on two separate repositories (neone and neone2) | http://localhost:7200 |
 | keycloak | Identity provider for ne-one-1 and ne-one-2 servers to authenticate ONE Record clients and to obtain tokens for outgoing requests. <br/> **Preconfigured client_id:** neone-client<br/> **Preconfigured client_secret:** lx7ThS5aYggdsMm42BP3wMrVqKm9WpNY  | http://localhost:8989 <br/> (username/password: admin/admin)|
 | mockserver | A mock server that displays all notification, subscription and action request and replies with specific patterns | http://localhost:1080/mockserver/dashboard |
@@ -81,11 +81,11 @@ There you will have server1, server2 and baseUrlKeyCloak
 
 8. Copy the access token
 
-## Connect Ops UI to NE:ONE
+## Connect ONExplorer to NE:ONE
 
-We show here the process to connect the Ops UI  to a NE:ONE server
+We show here the process to connect the ONExplorer to a NE:ONE server
 
-1. Connect to a Ops UI , in this image you have three possibilities:
+1. Connect to a ONExplorer, in this image you have three possibilities:
    - http://localhost:4080
    - http://localhost:5080
    - http://localhost:6080
@@ -95,13 +95,13 @@ We show here the process to connect the Ops UI  to a NE:ONE server
    - http://localhost:8080
    - http://localhost:8081
 4. Use the token generated in the previous section for the token field.
-5. Now the Ops UI is linked with one of the two NE:ONE servers. You can repeat the steps for a second Ops UI.
+5. Now the ONExplorer is linked with one of the two NE:ONE servers. You can repeat the steps for a second ONExplorer.
 
-## Add external servers in the Ops UI 
+## Add external servers in the ONExplorer 
 
-We show here how to add an external server to the Ops UI.
+We show here how to add an external server to the ONExplorer.
 
-1. Connect to a Ops UI , in this image you have three possibilities:
+1. Connect to a ONExplorer, in this image you have three possibilities:
    - http://localhost:4080
    - http://localhost:5080
    - http://localhost:6080
@@ -113,7 +113,7 @@ We show here how to add an external server to the Ops UI.
    - The base url of the server (to use the NE:ONE server of these image use http://localhost:8080 or 8081. To use the Ops UI server input http://localhost:4081 or 5081 or 6081)
    - A OIDC token (for NE:ONE you can use the get a token section while for Ops Ui server just put a random character)
 6. Click on ADD 
-7. Now the Ops UI can interact with external servers
+7. Now the ONExplorer can interact with external servers
 
 ## Add NE:ONE server into NE:ONE Play
 
