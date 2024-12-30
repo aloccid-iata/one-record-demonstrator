@@ -12,11 +12,11 @@ Welcome to the ONE Record Demonstrator, in this document you will find all the i
 
 1) Clone the repository
    ```bash
-   git clone https://github.com/IATA-Cargo/one-record-demo.git
+   git clone https://github.com/IATA-Cargo/one-record-demonstrator.git
    ```
 2) Switch to the directory to docker-compose
    ```bash
-   cd one-record-demo/docker-compose
+   cd one-record-demonstrator/docker-compose
    ```
    If you have Mac or Linux, please reset folder permissions 
    ```bash
@@ -54,10 +54,11 @@ Welcome to the ONE Record Demonstrator, in this document you will find all the i
 | graphdb | GraphDB database as database backend for ne-one-1 and ne-one-2 on two separate repositories (neone and neone2) | http://localhost:7200 |
 | keycloak | Identity provider for ne-one-1 and ne-one-2 servers to authenticate ONE Record clients and to obtain tokens for outgoing requests. <br/> **Preconfigured client_id:** neone-client<br/> **Preconfigured client_secret:** lx7ThS5aYggdsMm42BP3wMrVqKm9WpNY  | http://localhost:8989 <br/> (username/password: admin/admin)|
 | mockserver | A mock server that displays all notification, subscription and action request and replies with specific patterns | http://localhost:1080/mockserver/dashboard |
+
 IMPORTANT: 
 - To simplify the setup, both NE:ONE servers are connected to a single Keycloak server, sharing the same user account.
-- Each ops ui is directly connected with a ops ui server to stream notification.
-- You can connect two ops ui to the two ne-one server and keep one as a standalone client. The ops ui server is be able to reply to subscription requests and receive direct notifications.
+- Each ONExplorer is directly connected with a ONExplorer server to stream notification.
+- You can connect two ONExplorer to the two ne-one server and keep one as a standalone client. The ONExplorer server is be able to reply to subscription requests and receive direct notifications.
 
 
 ## Get a token
@@ -110,8 +111,8 @@ We show here how to add an external server to the ONExplorer.
 3. Click on ADD SERVER in the External Servers section
 4. On the popup insert:
    - Server name
-   - The base url of the server (to use the NE:ONE server of these image use http://localhost:8080 or 8081. To use the Ops UI server input http://localhost:4081 or 5081 or 6081)
-   - A OIDC token (for NE:ONE you can use the get a token section while for Ops Ui server just put a random character)
+   - The base url of the server (to use the NE:ONE server of these image use http://localhost:8080 or 8081. To use the ONExplorer server input http://localhost:4081 or 5081 or 6081)
+   - A OIDC token (for NE:ONE you can use the get a token section while for ONExplorer server just put a random character)
 6. Click on ADD 
 7. Now the ONExplorer can interact with external servers
 
@@ -138,4 +139,3 @@ We show here how to add an external server to the ONExplorer.
     - Color : pick up a random color
 
 5. Now you can start using NE:ONE Play. 
-
