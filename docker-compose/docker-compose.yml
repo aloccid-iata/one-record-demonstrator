@@ -28,8 +28,8 @@ services:
             ne-one-1:
                 condition: service_healthy
     
-    ONExplorer-one:
-        image: one-record-ONExplorer
+    onexplorer-one:
+        image: one-record-onexplorer
         build: 
             context: .
             dockerfile: ONExplorer/Dockerfile
@@ -42,8 +42,8 @@ services:
             ne-one-1:
                 condition: service_healthy
 
-    ONExplorer-two:
-        image: one-record-ONExplorer
+    onexplorer-two:
+        image: one-record-onexplorer
         environment:
             - PORT=5080
         network_mode: service:localhost
@@ -53,8 +53,8 @@ services:
             ne-one-1:
                 condition: service_healthy
 
-    ONExplorer-three:
-        image: one-record-ONExplorer
+    onexplorer-three:
+        image: one-record-onexplorer
         environment:
             - PORT=6080
         network_mode: service:localhost
@@ -64,8 +64,8 @@ services:
             ne-one-1:
                 condition: service_healthy
 
-    ONExplorer-server-one:
-        image: ONExplorer-server
+    onexplorer-server-one:
+        image: onexplorer-server
         build: 
             context: .
             dockerfile: ONExplorer/Dockerfile-express
@@ -78,8 +78,8 @@ services:
             ne-one-1:
                 condition: service_healthy
 
-    ONExplorer-server-two:
-        image: ONExplorer-server
+    onexplorer-server-two:
+        image: onexplorer-server
         environment:
             - PORT=5080
         network_mode: service:localhost
@@ -89,8 +89,8 @@ services:
             ne-one-1:
                 condition: service_healthy
 
-    ONExplorer-server-three:
-        image: ONExplorer-server
+    onexplorer-server-three:
+        image: onexplorer-server
         environment:
             - PORT=6080
         network_mode: service:localhost
