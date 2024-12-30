@@ -1,0 +1,374 @@
+{
+	"info": {
+		"_postman_id": "b158ec4f-198e-429a-9e69-35f79d350e7a",
+		"name": "Subscription",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28309429"
+	},
+	"item": [
+		{
+			"name": "Token Request",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "lx7ThS5aYggdsMm42BP3wMrVqKm9WpNY",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "neone-client",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "neone-client",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "ne-one-resource-server/openid",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrlKeyCloak}}/realms/neone/protocol/openid-connect/token",
+					"host": [
+						"{{baseUrlKeyCloak}}"
+					],
+					"path": [
+						"realms",
+						"neone",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subscription S1 to S2 Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", () => {\r",
+							"  pm.response.to.have.status(201);\r",
+							"});\r",
+							"pm.test(\"Location header is present\", () => {\r",
+							"  pm.response.to.have.header(\"Location\");\r",
+							"});\r",
+							"pm.test(\"Type header is present\", () => {\r",
+							"  pm.response.to.have.header(\"Type\");\r",
+							"});\r",
+							"\r",
+							"var req = JSON.parse(request.data);\r",
+							"pm.collectionVariables.set(\"subs1s2\", pm.response.headers.get(\"Location\").split(\"/\").pop());\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJGYzdaSHZUNGozbldNenZkX2xuYUsySGZWWnUtYWtBLTB0TGMwLVgwc1BZIn0.eyJleHAiOjE3MjgxNzMxNzcsImlhdCI6MTcyODEzNzE3NywianRpIjoiODQ4OWFmYWItN2U1MC00ODFhLTk2M2UtZWNmOGUwOTkxYTFkIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4OTg5L3JlYWxtcy9uZW9uZSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiIwYWU4OThmMy1kMjQ4LTRlYWMtODY4MS1iMDM4MWM4MmQ2YzAiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJuZW9uZS1jbGllbnQiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1uZW9uZSIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiY2xpZW50SG9zdCI6IjE3Mi4xOC4wLjEiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImxvZ2lzdGljc19hZ2VudF91cmkiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvbG9naXN0aWNzLW9iamVjdHMvX2RhdGEtaG9sZGVyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LW5lb25lLWNsaWVudCIsImNsaWVudEFkZHJlc3MiOiIxNzIuMTguMC4xIiwiY2xpZW50X2lkIjoibmVvbmUtY2xpZW50In0.jqY6Tq6dKMwC_TiuXYtiI0h03E1XwLlXCx95S4jHdeOoxx8otTYoxOabg8K9QX9NGOFm2AObPC01K7Mxu77Smt4lXfOTuIiqgnRvWbqa-IBDs3BPRen73Ube1yA4sIwprscuypiG6JVV64FM75mZgXZgI3sWgmpLRQqq3DhGUFohv93tTua-Qs3sKUqKHVfQAVGllW18uUnYRu_6TmBI5LCRAadbjZiMOT186A3xH6YTSA1zs-NRs-lfQNtE7ohh7uVaGyOVeMEc3FCGz5OnmYHtR1tOla0gzrR0ncqYjooQk3T8PVfbNgPATdKhsPYFgL0yqNuYYaaEGT8cI6ISug",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/ld+json",
+						"name": "Content-Type",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/ld+json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"@context\": {\n    \"cargo\": \"https://onerecord.iata.org/ns/cargo#\",\n    \"api\": \"https://onerecord.iata.org/ns/api#\"\n  },\n  \"@type\": \"api:Subscription\",\n  \"api:hasContentType\": \"application/ld+json\",\n  \"api:hasSubscriber\": {\n    \"@id\": \"http://ne-one-1:8080/logistics-objects/_data_holder\"\n  },\n  \"api:hasTopicType\": {\n    \"@id\": \"api:LOGISTICS_OBJECT_TYPE\"\n  },\n  \"api:includeSubscriptionEventType\": [\n    {\n      \"@id\": \"api:LOGISTICS_OBJECT_UPDATED\"\n    },\n    {\n      \"@id\": \"api:LOGISTICS_OBJECT_CREATED\"\n    },\n    {\n      \"@id\": \"api:LOGISTICS_EVENT_RECEIVED\"\n    }\n  ],\n  \"api:hasTopic\": {\n    \"@type\": \"http://www.w3.org/2001/XMLSchema#anyURI\",\n    \"@value\": \"https://onerecord.iata.org/ns/cargo#Product\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server2}}/subscriptions?topicType=https://onerecord.iata.org/ns/api%23LOGISTICS_OBJECT_TYPE&topic=https://onerecord.iata.org/ns/cargo%23Piece",
+					"host": [
+						"{{server2}}"
+					],
+					"path": [
+						"subscriptions"
+					],
+					"query": [
+						{
+							"key": "topicType",
+							"value": "https://onerecord.iata.org/ns/api%23LOGISTICS_OBJECT_TYPE"
+						},
+						{
+							"key": "topic",
+							"value": "https://onerecord.iata.org/ns/cargo%23Piece"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Approve subscription",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//NOTE: This test might fail as the action request must be in REQUEST_PENDING state.\r",
+							"//Solution: Set param :actionRquestId to a REQUEST_PENDING action request \r",
+							"//Test response code\r",
+							"pm.test(\"Response Status code is 204\", () => {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							"pm.test(\"Location is present\", () => {\r",
+							"    pm.response.to.have.header(\"Location\");\r",
+							"});\r",
+							"pm.test(\"Type is present\", () => {\r",
+							"    pm.response.to.have.header(\"Type\");\r",
+							"});\r",
+							"\r",
+							"var actionTypes = ['https://onerecord.iata.org/ns/api#SubscriptionRequest','https://onerecord.iata.org/ns/api#AccessDelegationRequest','https://onerecord.iata.org/ns/api#ChangeRequest'];\r",
+							"//Test type header\r",
+							"pm.test(\"Check type header\",() => {\r",
+							"    pm.expect(pm.response.headers.get(\"Type\")).to.be.oneOf(actionTypes);  \r",
+							"});\r",
+							"//Test Location header\r",
+							"pm.test(\"Check Location contains {{baseUrl}}/action-requests/ \", () => {\r",
+							"    var expectedValue = pm.variables.get(\"baseUrl\")+ \"/action-requests/\";\r",
+							"    pm.expect(pm.response.headers.get(\"Type\")).to.include(expectedValue);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/ld+json; version=2.0.0-dev",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/ld+json; version=2.0.0-dev",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server2}}/action-requests/:actionRequestId?status=REQUEST_ACCEPTED",
+					"host": [
+						"{{server2}}"
+					],
+					"path": [
+						"action-requests",
+						":actionRequestId"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "REQUEST_ACCEPTED"
+						}
+					],
+					"variable": [
+						{
+							"key": "actionRequestId",
+							"value": "{{subs1s2}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", () => {\r",
+							"  pm.response.to.have.status(201);\r",
+							"});\r",
+							"pm.test(\"Location header is present\", () => {\r",
+							"  pm.response.to.have.header(\"Location\");\r",
+							"});\r",
+							"pm.test(\"Type header is present\", () => {\r",
+							"  pm.response.to.have.header(\"Type\");\r",
+							"});\r",
+							"\r",
+							"var req = JSON.parse(request.data);\r",
+							"pm.collectionVariables.set(\"productiPhone\", pm.response.headers.get(\"Location\").split(\"/\").pop());\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/ld+json",
+						"name": "Content-Type",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/ld+json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"@context\": {\n        \"cargo\": \"https://onerecord.iata.org/ns/cargo#\"\n    },\n    \"@type\": \"cargo:Product\",\n    \"cargo:description\": \"iPhone PRO 14\",\n    \"cargo:hsCode\": \"123456\",\n    \"cargo:uniqueIdentifier\": \"A2650\",\n    \"cargo:manufacturer\": {\n        \"@type\": \"cargo:Company\",\n        \"cargo:name\": \"Apple Inc.\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server2}}/logistics-objects",
+					"host": [
+						"{{server2}}"
+					],
+					"path": [
+						"logistics-objects"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJGYzdaSHZUNGozbldNenZkX2xuYUsySGZWWnUtYWtBLTB0TGMwLVgwc1BZIn0.eyJleHAiOjE3MjgxNzU0NDgsImlhdCI6MTcyODEzOTQ0OCwianRpIjoiY2M2ZWYwNDItZGIzZS00YWU4LWFkZGEtMGNhNjdiNjNmZGNjIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4OTg5L3JlYWxtcy9uZW9uZSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiIwYWU4OThmMy1kMjQ4LTRlYWMtODY4MS1iMDM4MWM4MmQ2YzAiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJuZW9uZS1jbGllbnQiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1uZW9uZSIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiY2xpZW50SG9zdCI6IjE3Mi4xOS4wLjEiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImxvZ2lzdGljc19hZ2VudF91cmkiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvbG9naXN0aWNzLW9iamVjdHMvX2RhdGEtaG9sZGVyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LW5lb25lLWNsaWVudCIsImNsaWVudEFkZHJlc3MiOiIxNzIuMTkuMC4xIiwiY2xpZW50X2lkIjoibmVvbmUtY2xpZW50In0.jEYR6sI7rLuJyVGfWL04rtK6yJt0YJNcIVj7DNhgnpgJVdF4oSu2ytLRwCE0aEoYK_O9uHWDnO-XW6CLCDpyUF6BtOam1wWoYML0l66Ng8cs5O2s1_gHI0tbhNDmPQ-7tOr-yNPWmL-IAUi-vRnvXQoBL6KXlsHXCiyKu9FN3WCX0IaR84913Av2FgI8H6UtUlxzinfaSHwrpI53UVz5N14OVij1VJY-VHJ3Jcrjz15hunB14tWxS2FNY72Ka7H48gE4uxnK-EV53AuQSrl8IgqbL0ONY8hTbUOqaUUt1K4A6ZLziKD3geoCN4vFNp-jWKeSmqTcyG_dHQ8uR7rm7A",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "subs1s2",
+			"value": ""
+		},
+		{
+			"key": "productiPhone",
+			"value": ""
+		}
+	]
+}
